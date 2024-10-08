@@ -13,10 +13,18 @@ from shapely.ops import unary_union
 
 @st.cache_data
 def load_data():
-	tree_census_path = "../data/clean/tree_data/2015.csv"
-	zip_path = "../data/clean/geo_data/zip_data.geojson"
-	nta_path = "../data/clean/geo_data/nta_data.geojson"
-	borough_path = "../data/clean/geo_data/borough_data.geojson"
+
+	# For local development
+	#tree_census_path = "../data/clean/tree_data/2015.csv"
+	#zip_path = "../data/clean/geo_data/zip_data.geojson"
+	#nta_path = "../data/clean/geo_data/nta_data.geojson"
+	#borough_path = "../data/clean/geo_data/borough_data.geojson"
+
+	# For streamlit deployment
+	tree_census_path = "data/clean/tree_data/2015.csv"
+	zip_path = "data/clean/geo_data/zip_data.geojson"
+	nta_path = "data/clean/geo_data/nta_data.geojson"
+	borough_path = "data/clean/geo_data/borough_data.geojson"
 
 	df = pd.read_csv(tree_census_path, dtype={"zip_code": "str"})
 	gdfz = gpd.read_file(zip_path)
