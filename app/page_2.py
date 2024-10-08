@@ -28,6 +28,9 @@ with st.sidebar:
 	# Show a slide selector for min_samples
 	min_samples_select = st.slider("Select a minimum samples value:", min_value=1, max_value=10, value=5, step=1)
 
+	# Show an input box for minimum number of tree per hectare
+	min_per_hectare = st.number_input("Enter a minimum number of trees per hectare:", value=1)
+
 # Create a filtered geodataframe to retrieve the relevant centroid for the map
 gdf_borough_filtered = gdf_borough.loc[gdf_borough["borough"] == borough_select]
 centroid_long = gdf_borough_filtered["geometry"].centroid.x.values[0]
@@ -42,7 +45,7 @@ df_filtered_gdf = gpd.GeoDataFrame(df_filtered, geometry=gs, crs="EPSG:32618")
 df_filtered_gdf = cluster_data(df_filtered_gdf, min_cluster_size_select, min_samples_select)
 
 # Calculate the tree density per hectare for each cluster and return a new geodataframe contain that new data
-cluster_gdf = calculate_cluster_density(df_filtered_gdf)
+cluster_gdf = calculate_cluster_density(df_filtered_gdf, min_per_hectare=min_per_hectare)
 
 # Plot the map with clusters
 map = plot_map(cluster_gdf, centroid_lat, centroid_long, "trees_per_hectare", "cluster", zoom=11)

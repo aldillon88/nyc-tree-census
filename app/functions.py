@@ -2,8 +2,6 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import geopandas as gpd
-import folium # DELETE AND UNINSTALL
-import streamlit_folium as st_folium # DELETE AND UNINSTALL
 
 import json
 import plotly.graph_objects as go
@@ -112,7 +110,7 @@ def cluster_data(gdf, min_cluster_size, min_samples):
 	return gdf
 
 
-def calculate_cluster_density(gdf, cluster_col="cluster", geo_col="geometry"):
+def calculate_cluster_density(gdf, cluster_col="cluster", geo_col="geometry", min_per_hectare=None):
 
 	# Group the data by cluster label (excluding noise, i.e., clusters labeled as -1)
 	cluster_groups = gdf[gdf[cluster_col] != -1].groupby(cluster_col)
@@ -144,6 +142,9 @@ def calculate_cluster_density(gdf, cluster_col="cluster", geo_col="geometry"):
 
 	# Calculate the number of trees per hectare
 	polygon_gdf["trees_per_hectare"] = np.floor(polygon_gdf["num_trees"] / polygon_gdf["hectares"])
+
+	if min_per_hectare != None:
+		polygon_gdf = polygon_gdf[polygon_gdf["trees_per_hectare"] >= min_per_hectare]
 
 	# Sort by trees_per_hectare
 	polygon_gdf.sort_values(by="trees_per_hectare", ascending=False, inplace=True)

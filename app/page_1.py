@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit_folium as st_folium
 import numpy as np
 
 from functions import *
