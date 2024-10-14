@@ -73,17 +73,6 @@ df_geo = add_metric_columns(df, gdf, scope, area_col_name)
 map = plot_map(df_geo, latitude, longitude, "trees_per_hectare", scope)
 st.plotly_chart(map)
 
-# Create some metrics to display
-highest_density_value = np.floor(df_geo["trees_per_hectare"].max())
-highest_density_location = df_geo.loc[np.floor(df_geo["trees_per_hectare"]) == highest_density_value][scope]
-
-st.metric(f"The {scope_select} with the highest density is:", highest_density_location.values[0])
-
-st.table(df.head())
-
-steward_grouped = df.groupby(by=[scope, "stewardship_level"]).size().reset_index(name="count")
-st.table(steward_grouped.head(10))
-
 
 
 
